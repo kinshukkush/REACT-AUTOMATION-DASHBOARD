@@ -2,9 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { AppState, User, ApiConfig } from '../types';
 
-export const useStore = create<AppState>()(
-    persist(
-        (set) => ({
+export const useStore = create<AppState>()(    persist(
+        (set, get) => ({
             user: null,
             theme: 'dark',
             apiConfig: {

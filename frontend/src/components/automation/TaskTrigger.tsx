@@ -132,7 +132,7 @@ export const TaskTrigger = () => {
                         </label>
                         <motion.textarea
                             whileFocus={{ scale: 1.01 }}
-                            className="w-full px-4 py-3 bg-dark-card/80 border border-dark-border rounded-xl text-gray-300 min-h-[120px] resize-none transition-all duration-300 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 placeholder:text-gray-500"
+                            className="w-full px-4 py-3 bg-dark-card/80 border border-dark-border rounded-xl text-gray-300 min-h-[120px] resize-y transition-all duration-300 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 placeholder:text-gray-500 leading-relaxed"
                             placeholder="Describe what this automation should do..."
                             value={taskDescription}
                             onChange={(e) => setTaskDescription(e.target.value)}

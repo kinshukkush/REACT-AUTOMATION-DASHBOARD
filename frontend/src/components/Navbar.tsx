@@ -43,11 +43,11 @@ export const Navbar = () => {
             {/* Search */}
             <div className="flex-1 max-w-xl">
                 <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within:text-primary-400" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within:text-primary-400 pointer-events-none z-10" />
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="w-full pl-10 pr-4 py-2.5 input"
+                        className="w-full pl-11 pr-4 py-2.5 input"
                     />
                 </div>
             </div>

@@ -11,13 +11,44 @@ import type {
 } from '../types';
 
 // Create axios instance with base configuration
+const getBaseURL = () => {
+    // Check localStorage for saved backend URL
+    const savedUrl = localStorage.getItem('api_base_url');
+    if (savedUrl) return savedUrl;
+    
+    // Check for stored config
+    const storedConfig = localStorage.getItem('ai-dashboard-storage');
+    if (storedConfig) {
+        try {
+            const parsed = JSON.parse(storedConfig);
+            if (parsed?.state?.apiConfig?.backendUrl) {
+                return parsed.state.apiConfig.backendUrl;
+            }
+        } catch (e) {
+            console.error('Error parsing stored config:', e);
+        }
+    }
+    
+    // Fallback to environment variable
+    return import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+};
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
+    baseURL: getBaseURL(),
     timeout: 30000,
     headers: {
         'Content-Type': 'application/json',
     },
 });
+
+// Update base URL when it changes
+if (typeof window !== 'undefined') {
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'api_base_url' && e.newValue) {
+            api.defaults.baseURL = e.newValue;
+        }
+    });
+}
 
 // Request interceptor for adding auth token
 api.interceptors.request.use(

@@ -8,6 +8,7 @@ import {
     Info,
     Loader2,
     AlertCircle,
+    ChevronRight,
 } from 'lucide-react';
 import { useActivityFeed } from '../../hooks/useApi';
 

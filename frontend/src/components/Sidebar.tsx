@@ -50,7 +50,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
                             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 via-primary-600 to-accent-purple rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 ring-2 ring-primary-500/20">
                                 <Sparkles className="w-6 h-6 text-white" />
                             </div>
-                            <span className="font-bold text-xl gradient-text">AI Ops</span>
+                            <span className="font-bold text-xl bg-gradient-to-r from-primary-400 via-accent-purple to-accent-pink bg-clip-text text-transparent">AI Ops</span>
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -94,8 +94,9 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
                                     whileTap={{ scale: 0.95 }}
                                     className="relative z-10"
                                 >
-                                    <item.icon className={`w-5 h-5 flex-shrink-0 transition-all ${isActive ? 'drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]' : ''
-                                        }`} />
+                                    <item.icon className={`w-5 h-5 flex-shrink-0 transition-all ${
+                                        isActive ? 'drop-shadow-[0_0_8px_rgba(99,102,241,0.8)]' : ''
+                                    }`} />
                                 </motion.div>
                                 <AnimatePresence mode="wait">
                                     {!collapsed && (

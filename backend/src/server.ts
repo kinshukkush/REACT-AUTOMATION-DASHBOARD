@@ -5,14 +5,26 @@ import bodyParser from 'body-parser';
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Enhanced CORS configuration
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || '*',
+    credentials: true,
+    optionsSuccessStatus: 200,
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-// Request logging middleware
+// Request logging middleware with error handling
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
     next();
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
 // --- Data Types ---
@@ -325,10 +337,18 @@ app.post('/actions/execute', (req, res) => {
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.error('Error:', err);
-    res.status(500).json({
+    console.error('[ERROR]', {
+        message: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method,
+        timestamp: new Date().toISOString()
+    });
+    
+    res.status(err.status || 500).json({
         error: 'Internal server error',
-        message: err.message
+        message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
+        timestamp: new Date().toISOString()
     });
 });
 
@@ -336,19 +356,33 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 app.use((req, res) => {
     res.status(404).json({
         error: 'Not found',
-        path: req.path
+        path: req.path,
+        message: `Endpoint ${req.method} ${req.path} does not exist`,
+        timestamp: new Date().toISOString()
     });
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('SIGTERM received. Shutting down gracefully...');
+    process.exit(0);
+});
+
+process.on('SIGINT', () => {
+    console.log('SIGINT received. Shutting down gracefully...');
+    process.exit(0);
 });
 
 // Start server
 app.listen(PORT, () => {
     console.log(`
 ╔════════════════════════════════════════════════╗
-║   AI Operations Dashboard - Backend Server    ║
+║   AI Operations Dashboard - Backend Server     ║
 ╠════════════════════════════════════════════════╣
-║  🚀 Server running on http://localhost:${PORT}  ║
+║  🚀 Server running on http://localhost:${PORT}    ║
 ║  📊 Status: Operational                        ║
-║  🔧 Environment: ${process.env.NODE_ENV || 'development'}              ║
+║  🔧 Environment: ${process.env.NODE_ENV || 'development'}                   ║
+║  ⏰ Started: ${new Date().toLocaleString()}           ║
 ╚════════════════════════════════════════════════╝
     `);
 });

@@ -18,14 +18,14 @@ export const Input = ({ label, error, icon, className, ...props }: InputProps) =
             )}
             <div className="relative group">
                 {icon && (
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-primary-400 transition-colors">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-primary-400 transition-colors pointer-events-none z-10">
                         {icon}
                     </div>
                 )}
                 <input
                     className={cn(
                         'input',
-                        icon && 'pl-10',
+                        icon && 'pl-11',
                         error && 'border-red-500 focus:ring-red-500/50 focus:border-red-500',
                         className
                     )}
